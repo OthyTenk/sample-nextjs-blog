@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
+import { config } from 'next/dist/build/templates/pages'
 
 const postsDirectory = join(process.cwd(), '_posts')
 
@@ -18,7 +19,7 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
     [key: string]: string
   }
 
-  const items: Items = {}
+  let items: Items = {}
 
   // Ensure only the minimal needed data is exposed
   fields.forEach((field) => {
@@ -33,6 +34,11 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
       items[field] = data[field]
     }
   })
+
+  // replaces ${basePath} with next.config.js basePath
+  let itemStr = JSON.stringify(items)
+  itemStr = itemStr.replaceAll(/\$\{basePath\}/gi, config.basePath)
+  items = JSON.parse(itemStr)
 
   return items
 }
