@@ -1,7 +1,9 @@
 import fs from 'fs'
-import { join } from 'path'
 import matter from 'gray-matter'
-import { config } from 'next/dist/build/templates/pages'
+import  config  from '../next.config'
+import { join } from 'path'
+
+
 
 const postsDirectory = join(process.cwd(), '_posts')
 
